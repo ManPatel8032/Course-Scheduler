@@ -1,0 +1,13 @@
+﻿__pycache__/
+*.py[cod]
+*.sqlite3
+db.sqlite3
+.venv/
+venv/
+algorithms/*.exe
+algorithms/*.o
+algorithms/*.obj
+.vscode/
+.idea/
+Thumbs.db
+Desktop.ini
