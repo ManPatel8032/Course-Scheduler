@@ -1,0 +1,7 @@
+{
+    "courses":[
+        {"code" : "CS101","prerequisites":[]},
+        {"code" : "CS201","prerequisites":["CS101"]},
+        {"code" : "CS301","prerequisites":["CS101","CS201"]}
+    ]
+}
