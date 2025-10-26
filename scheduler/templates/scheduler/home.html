@@ -1,0 +1,374 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Course Scheduler - Student Planning Tool</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white; 
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+
+        .content {
+            padding: 40px;
+        }
+
+        .catalog-section {
+            margin-bottom: 40px;
+        }
+
+        .catalog-section h2 {
+            color: #667eea;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #667eea;
+        }
+
+        .course-card {
+            background: #f8f9fa;
+            border: 2px solid #e9ecef;
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 15px;
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+
+        .course-card:hover {
+            border-color: #667eea;
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .course-code {
+            font-weight: bold;
+            color: #667eea;
+            font-size: 1.2em;
+            margin-bottom: 5px;
+        }
+
+        .course-name {
+            color: #333;
+            font-size: 1.1em;
+            margin-bottom: 10px;
+        }
+
+        .course-info {
+            color: #666;
+            font-size: 0.9em;
+            margin-bottom: 5px;
+        }
+
+        .prerequisites {
+            margin-top: 10px;
+            padding-top: 10px;
+            border-top: 1px solid #dee2e6;
+        }
+
+        .prerequisites-label {
+            font-weight: bold;
+            color: #dc3545;
+            font-size: 0.85em;
+        }
+
+        .prereq-list {
+            color: #666;
+            font-size: 0.9em;
+        }
+
+        .selected-courses {
+            background: #e7f3ff;
+            border: 2px solid #667eea;
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 30px;
+        }
+
+        .selected-courses h3 {
+            color: #667eea;
+            margin-bottom: 15px;
+        }
+
+        .selected-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .selected-badge {
+            background: #667eea;
+            color: white;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 0.9em;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .selected-badge .remove {
+            cursor: pointer;
+            font-weight: bold;
+            opacity: 0.8;
+        }
+
+        .selected-badge .remove:hover {
+            opacity: 1;
+        }
+
+        .btn-generate {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 1.2em;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            width: 100%;
+            margin-top: 20px;
+        }
+
+        .btn-generate:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-generate:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+
+        .results-section {
+            margin-top: 40px;
+            padding: 25px;
+            background: #f0f0f0;
+            border-radius: 15px;
+            display: none;
+        }
+
+        .results-section.show {
+            display: block;
+        }
+
+        .semester-group {
+            margin-bottom: 20px;
+        }
+
+        .semester-group h4 {
+            color: #667eea;
+            margin-bottom: 10px;
+        }
+
+        .empty-state {
+            text-align: center;
+            color: #999;
+            padding: 40px;
+        }
+
+        @media (max-width: 768px) {
+            .header h1 {
+                font-size: 1.8em;
+            }
+
+            .content {
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🎓 Course Scheduler</h1>
+            <p>Smart Academic Planning Made Easy</p>
+        </div>
+
+        <div class="content">
+            <!-- Course Catalog Display -->
+            <div class="catalog-section">
+                <h2>📚 Available Courses</h2>
+                
+                {% for department, courses in courses_by_department.items %}
+                <div style="margin-bottom: 30px;">
+                    <h3 style="color: #764ba2; margin-bottom: 15px;">{{ department }} Department</h3>
+                    
+                    {% for course in courses %}
+                    <div class="course-card" onclick="toggleCourseSelection('{{ course.code }}', '{{ course.name }}')">
+                        <div class="course-code">{{ course.code }}</div>
+                        <div class="course-name">{{ course.name }}</div>
+                        <div class="course-info">📖 {{ course.description }}</div>
+                        <div class="course-info">📊 Credits: {{ course.credits }}</div>
+                        
+                        {% if course.prerequisites %}
+                        <div class="prerequisites">
+                            <div class="prerequisites-label">⏳ Prerequisites:</div>
+                            <div class="prereq-list">{{ course.prerequisites|join:", " }}</div>
+                        </div>
+                        {% else %}
+                        <div class="prerequisites">
+                            <div style="color: #28a745; font-weight: bold;">✅ No prerequisites - You can take this anytime!</div>
+                        </div>
+                        {% endif %}
+                    </div>
+                    {% endfor %}
+                </div>
+                {% endfor %}
+            </div>
+
+            <!-- Selected Courses Display -->
+            <div class="selected-courses" id="selectedSection" style="display: none;">
+                <h3>✅ Selected Courses</h3>
+                <div class="selected-list" id="selectedList">
+                    <!-- Selected courses will appear here -->
+                </div>
+                <button class="btn-generate" onclick="generateSchedule()">
+                    🚀 Generate My Schedule
+                </button>
+            </div>
+
+            <!-- Results Display -->
+            <div class="results-section" id="resultsSection">
+                <h3>📅 Your Personalized Schedule</h3>
+                <div id="resultsContent"></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Load course catalog data
+        const allCourses = JSON.parse(`{{ catalog_json|escapejs }}`);
+        let selectedCourses = new Set();
+
+        function toggleCourseSelection(code, name) {
+            if (selectedCourses.has(code)) {
+                selectedCourses.delete(code);
+            } else {
+                selectedCourses.add(code);
+            }
+            updateSelectedDisplay();
+        }
+
+        function updateSelectedDisplay() {
+            const section = document.getElementById('selectedSection');
+            const list = document.getElementById('selectedList');
+            
+            if (selectedCourses.size === 0) {
+                section.style.display = 'none';
+                return;
+            }
+
+            section.style.display = 'block';
+            list.innerHTML = '';
+            
+            selectedCourses.forEach(code => {
+                const badge = document.createElement('div');
+                badge.className = 'selected-badge';
+                badge.innerHTML = `${code} <span class="remove" onclick="event.stopPropagation(); removeCourse('${code}')">×</span>`;
+                list.appendChild(badge);
+            });
+        }
+
+        function removeCourse(code) {
+            selectedCourses.delete(code);
+            updateSelectedDisplay();
+        }
+
+        async function generateSchedule() {
+            const coursesArray = Array.from(selectedCourses);
+            
+            // Get full course data for selected courses
+            const selectedCoursesData = allCourses.filter(c => coursesArray.includes(c.code));
+
+            // Call backend
+            const response = await fetch('/generate/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ courses: selectedCoursesData })
+            });
+
+            const result = await response.json();
+            
+            // Display results
+            document.getElementById('resultsSection').classList.add('show');
+            
+            if (result.error) {
+                document.getElementById('resultsContent').innerHTML = 
+                    `<div style="color: red; padding: 20px;">❌ Error: ${result.error}</div>`;
+            } else {
+                displaySchedule(result);
+            }
+        }
+
+        function displaySchedule(data) {
+            const order = data.order || [];
+            
+            if (order.length === 0) {
+                document.getElementById('resultsContent').innerHTML = 
+                    '<div class="empty-state">No schedule could be generated. Please select courses with valid prerequisites.</div>';
+                return;
+            }
+
+            // Group by semester (assuming 2 courses per semester)
+            const coursesPerSemester = 2;
+            let html = '';
+            
+            for (let i = 0; i < order.length; i += coursesPerSemester) {
+                const semesterNum = Math.floor(i / coursesPerSemester) + 1;
+                const semesterCourses = order.slice(i, i + coursesPerSemester);
+                
+                html += `
+                    <div class="semester-group">
+                        <h4>📆 Semester ${semesterNum}</h4>
+                        ${semesterCourses.map(code => `<div style="padding: 8px; background: white; margin: 5px 0; border-radius: 8px;">${code}</div>`).join('')}
+                    </div>
+                `;
+            }
+            
+            document.getElementById('resultsContent').innerHTML = html;
+        }
+
+        // Initialize selected courses display
+        updateSelectedDisplay();
+    </script>
+</body>
+</html>
+

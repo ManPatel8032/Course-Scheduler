@@ -1,0 +1,70 @@
+{
+  "courses": [
+    {
+      "code": "MATH101",
+      "name": "Introduction to Calculus",
+      "credits": 3,
+      "department": "Mathematics",
+      "prerequisites": [],
+      "description": "Fundamentals of differential and integral calculus"
+    },
+    {
+      "code": "CS101",
+      "name": "Introduction to Computer Science",
+      "credits": 3,
+      "department": "Computer Science",
+      "prerequisites": [],
+      "description": "Basic programming concepts and problem-solving"
+    },
+    {
+      "code": "CS102",
+      "name": "Programming Fundamentals",
+      "credits": 3,
+      "department": "Computer Science",
+      "prerequisites": ["CS101"],
+      "description": "Advanced programming techniques and data structures"
+    },
+    {
+      "code": "CS201",
+      "name": "Data Structures and Algorithms",
+      "credits": 4,
+      "department": "Computer Science",
+      "prerequisites": ["CS101", "CS102", "MATH101"],
+      "description": "Analysis and design of data structures"
+    },
+    {
+      "code": "CS301",
+      "name": "Advanced Algorithms",
+      "credits": 4,
+      "department": "Computer Science",
+      "prerequisites": ["CS201"],
+      "description": "Graph algorithms, dynamic programming, and optimization"
+    },
+    {
+      "code": "MATH201",
+      "name": "Linear Algebra",
+      "credits": 3,
+      "department": "Mathematics",
+      "prerequisites": ["MATH101"],
+      "description": "Vector spaces, matrices, and linear transformations"
+    },
+    {
+      "code": "MATH301",
+      "name": "Discrete Mathematics",
+      "credits": 3,
+      "department": "Mathematics",
+      "prerequisites": ["MATH101"],
+      "description": "Logic, sets, functions, and proof techniques"
+    },
+    {
+      "code": "STAT101",
+      "name": "Statistics and Probability",
+      "credits": 3,
+      "department": "Mathematics",
+      "prerequisites": ["MATH101"],
+      "description": "Basic statistics and probability theory"
+    }
+  ]
+}
+
+
