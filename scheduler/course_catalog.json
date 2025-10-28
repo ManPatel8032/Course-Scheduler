@@ -1,6 +1,14 @@
 {
   "courses": [
     {
+      "code": "ECON101",
+      "name": "Economics",
+      "credits": 3,
+      "department": "Humanities",
+      "prerequisites": [],
+      "description": "Introduction to macro and microeconomics."
+    },
+    {
       "code": "MATH101",
       "name": "Introduction to Calculus",
       "credits": 3,
@@ -9,11 +17,19 @@
       "description": "Fundamentals of differential and integral calculus"
     },
     {
+      "code": "CS100",
+      "name": "Introduction to C++ (ICC)",
+      "credits": 3,
+      "department": "Computer Science",
+      "prerequisites": [],
+      "description": "Core concepts of C++ programming and syntax."
+    },
+    {
       "code": "CS101",
       "name": "Introduction to Computer Science",
       "credits": 3,
       "department": "Computer Science",
-      "prerequisites": [],
+      "prerequisites": ["CS100"],
       "description": "Basic programming concepts and problem-solving"
     },
     {
@@ -29,8 +45,24 @@
       "name": "Data Structures and Algorithms",
       "credits": 4,
       "department": "Computer Science",
-      "prerequisites": ["CS101", "CS102", "MATH101"],
+      "prerequisites": ["CS102", "MATH101"],
       "description": "Analysis and design of data structures"
+    },
+    {
+      "code": "CS205",
+      "name": "Java Programming",
+      "credits": 3,
+      "department": "Computer Science",
+      "prerequisites": ["CS102"],
+      "description": "Object-oriented programming using Java."
+    },
+    {
+      "code": "CS210",
+      "name": "Digital Logic (DL)",
+      "credits": 3,
+      "department": "Computer Science",
+      "prerequisites": ["CS101"],
+      "description": "Logic gates, boolean algebra, and digital circuit design."
     },
     {
       "code": "CS301",
@@ -39,6 +71,30 @@
       "department": "Computer Science",
       "prerequisites": ["CS201"],
       "description": "Graph algorithms, dynamic programming, and optimization"
+    },
+    {
+      "code": "CS310",
+      "name": "Computer Architecture",
+      "credits": 4,
+      "department": "Computer Science",
+      "prerequisites": ["CS201", "CS210"],
+      "description": "Organization and design of computer systems."
+    },
+    {
+      "code": "CS320",
+      "name": "Computer Networks",
+      "credits": 3,
+      "department": "Computer Science",
+      "prerequisites": ["CS201"],
+      "description": "Network protocols, TCP/IP, and layered architectures."
+    },
+    {
+      "code": "CS330",
+      "name": "Database Management Systems (DBMS)",
+      "credits": 3,
+      "department": "Computer Science",
+      "prerequisites": ["CS201"],
+      "description": "Relational models, SQL, and database design."
     },
     {
       "code": "MATH201",
@@ -66,5 +122,3 @@
     }
   ]
 }
-
-

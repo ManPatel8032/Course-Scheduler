@@ -1,24 +1,6 @@
 {
     "courses": [
         {
-            "code": "CS102",
-            "prerequisites": [
-                "CS101"
-            ]
-        },
-        {
-            "code": "STAT101",
-            "prerequisites": [
-                "MATH101"
-            ]
-        },
-        {
-            "code": "MATH301",
-            "prerequisites": [
-                "MATH101"
-            ]
-        },
-        {
             "code": "CS301",
             "prerequisites": [
                 "CS201"
@@ -29,16 +11,45 @@
             "prerequisites": []
         },
         {
-            "code": "CS101",
-            "prerequisites": []
-        },
-        {
             "code": "CS201",
             "prerequisites": [
-                "CS101",
                 "CS102",
                 "MATH101"
             ]
+        },
+        {
+            "code": "CS330",
+            "prerequisites": [
+                "CS201"
+            ]
+        },
+        {
+            "code": "CS205",
+            "prerequisites": [
+                "CS102"
+            ]
+        },
+        {
+            "code": "CS102",
+            "prerequisites": [
+                "CS101"
+            ]
+        },
+        {
+            "code": "CS320",
+            "prerequisites": [
+                "CS201"
+            ]
+        },
+        {
+            "code": "CS101",
+            "prerequisites": [
+                "CS100"
+            ]
+        },
+        {
+            "code": "CS100",
+            "prerequisites": []
         }
     ]
 }
