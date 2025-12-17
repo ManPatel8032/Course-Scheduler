@@ -39,7 +39,7 @@ A sophisticated web application for intelligent course scheduling that optimizes
 
 1. **Clone the repository**
    ```bash
-   git clone https://github.com/yourusername/course-scheduler.git
+   git clone https://github.com/ManPatel8032/course-scheduler.git
    cd course-scheduler
    ```
 
