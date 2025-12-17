@@ -50,27 +50,21 @@ def generate_schedule(request):
     algo_dir = os.path.join(base_dir, 'algorithms')
     input_path = os.path.join(algo_dir, 'input_courses.json')
     output_path = os.path.join(algo_dir, 'output_order.json')
-    # Use .exe on Windows, otherwise plain name
     executable_name = 'scheduler.exe' if platform.system() == 'Windows' else 'scheduler'
     cpp_executable = os.path.join(algo_dir, executable_name)
 
     try:
-        # Handle GET request - use default input file
         if request.method == "GET":
-            # Copy default input to working input file
             default_input = os.path.join(algo_dir, 'input_sample.json')
             if not os.path.exists(default_input):
                 return JsonResponse({"error": "Default input file not found"}, status=500)
             
-            # Copy default input to input_courses.json
             shutil.copy2(default_input, input_path)
         
-        # Handle POST request - use custom input
         elif request.method == "POST":
             try:
                 data = json.loads(request.body)
                 
-                # Load the full course catalog to find prerequisite details
                 catalog_path = os.path.join(os.path.dirname(__file__), 'course_catalog.json')
                 with open(catalog_path, 'r') as f:
                     catalog = json.load(f)
@@ -78,10 +72,8 @@ def generate_schedule(request):
                 catalog_courses = {c["code"]: c for c in catalog.get("courses", [])}
                 selected_codes = [c["code"] for c in data.get("courses", [])]
                 
-                # Build a set of all courses we need (selected + prerequisites)
                 courses_needed = set(selected_codes)
-                
-                # Add all prerequisites recursively
+           
                 def add_prerequisites(code, visited=None):
                     if visited is None:
                         visited = set()
@@ -97,7 +89,6 @@ def generate_schedule(request):
                 for code in selected_codes:
                     add_prerequisites(code)
                 
-                # Build simplified data with only needed courses
                 simplified_data = {
                     "courses": [
                         {
@@ -114,18 +105,15 @@ def generate_schedule(request):
                     json.dump(simplified_data, f, indent=4)
             except json.JSONDecodeError:
                 return JsonResponse({"error": "Invalid JSON in request body"}, status=400)
-        
-        # Ensure input file exists
+
         if not os.path.exists(input_path):
             return JsonResponse({"error": "Input file not found"}, status=500)
         
-        # Check if C++ executable exists
         if not os.path.exists(cpp_executable):
             return JsonResponse({
                 "error": "Scheduler executable not found. Please compile scheduler.cpp first"
             }, status=500)
         
-        # Run the compiled C++ program
         result = subprocess.run([cpp_executable], cwd=algo_dir, capture_output=True, text=True)
         
         if result.returncode != 0:
@@ -134,7 +122,6 @@ def generate_schedule(request):
                 "details": result.stderr
             }, status=500)
         
-        # Read and return the generated result
         if not os.path.exists(output_path):
             return JsonResponse({"error": "Output file not generated"}, status=500)
         

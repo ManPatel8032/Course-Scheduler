@@ -44,7 +44,7 @@ int main() {
     // Build graph
     for (auto& course : input["courses"]) {
         string code = course["code"];
-        indegree[code]; // initialize
+        indegree[code]; 
 
         for (auto& pre : course["prerequisites"]) {
             graph[pre].push_back(code);
@@ -52,10 +52,9 @@ int main() {
         }
     }
 
-    // Get sorted order
     vector<string> result = topoSort(graph, indegree);
 
-    // Write output JSON
+
     json output;
     output["order"] = result;
 
